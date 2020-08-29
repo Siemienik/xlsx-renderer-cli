@@ -1,10 +1,12 @@
-import {cli} from './program';
+#!/usr/bin/env node
 
+import { cli } from './program';
+
+const parse = (args: string[]) => cli(args, process.stdout, console.debug);
 
 if (process.stdin.isTTY) {
-    cli(process.argv, process.stdout);
-}
-else {
+    parse(process.argv);
+} else {
     let stdin = '';
     process.stdin.on('readable', () => {
         const chunk = process.stdin.read();
@@ -13,6 +15,6 @@ else {
         }
     });
     process.stdin.on('end', () => {
-        cli([...process.argv, stdin], process.stdout);
+        parse([...process.argv, stdin]);
     });
 }
